@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--This is how you comment-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initialscale=1" name="viewport">
+    <title>Scandataproc</title>
+
+    <!-- LOCAL
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/bootstrap-theme.min.css" rel="stylesheet">
+    <script src="/static/jquery-1.4.2.min.js"></script>
+    -->
+
+    <!-- ONLINE -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css">
+    <script type="text/javascript" src="/static/select.js"></script>
+    <link href="/static/teststyle.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/mpld3.v0.2.js"></script>
+
+
+</head>
+<body role="document">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="login">
+                Scandataproc
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="select">
+                        Data Select
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="data">
+                        Data Formatting
+                    </a>
+                </li>
+                <li>
+                    <a href="process">
+                        Data Processing
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="checkboxes" status="{{ session['checkboxes'] }}"/>
+<div class="container data-select" role="main">
+    <br/>
+    <br/>
+    <br/>
+    <div class="margin-info">
+        {% if user.is_anonymous() %}
+            <p align="right">
+                <a href="/login">Login</a>
+                /
+                <a href="/reg">Register</a>
+            </p>
+        {% else %}
+            <p align="right">Logged in as {{ user.username }}
+                <br/>
+                <a href="/db">Logbook</a>
+                <br/>
+                <a href="/logout">Logout</a>
+            </p>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-6">
+                <label for="sel1">Select files to view:</label>
+                <select multiple class="form-control" id="sel1">
+                </select>
+            </div>
+            <div class="col-xs-6">
+                <label for="comment">Comment:</label>
+                <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <button class="hiddenbtn" onclick="hitAgaE()">CLICK</button>
+            <div class="bootbtn">
+                <label for="againstE">Plot against Energy</label>
+                <input type="checkbox" id="againstE" data-toggle="toggle">
+            </div>
+            <form id="meta-form" method=post action="" remote="true">
+                <input type="hidden" name="idnum" id="idnum">
+                <input type="hidden" name="agaE" id="agaE" value="{{ againstE }}">
+                <div class="col-xs-6" id="metaForm_id">
+                    <div class="col-xs-6">
+                    </div>
+                    <div class="col-xs-5">
+                        <span class="centerBlock">
+                            <button type="button" onclick="log()" class="btn btn-primary btn-sm" id="logbtn">
+                                Add to Logbook
+                            </button>
+                        </span>
+                    </div>
+                    <div class="col-xs-1">
+                        <p id="log_add">
+                        </p>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        {{ form.ebool }}
+                        <label style="width:300px;">{{ form.energy.label }}</label>
+                        {{ form.energy }}
+                    </div>
+                    <div class="row">
+                        {{ form.ecbool }}
+                        <label style="width:300px;">{{ form.energyCalc.label }}</label>
+                        From xtal angles
+                    </div>
+                    <div class="row">
+                        {{ form.a1bool }}
+                        <label style="width:300px;">{{ form.xtal1A.label }}</label>
+                        {{ form.xtal1A }}
+                    </div>
+                    <div class="row">
+                        {{ form.a2bool }}
+                        <label style="width:300px;">{{ form.xtal2A.label }}</label>
+                        {{ form.xtal2A }}
+                    </div>
+                    <div class="row">
+                        {{ form.t1bool }}
+                        <label style="width:300px;">{{ form.xtal1T.label }}</label>
+                        {{ form.xtal1T }}
+                    </div>
+                    <div class="row">
+                        {{ form.t2bool }}
+                        <label style="width:300px;">{{ form.xtal2T.label }}</label>
+                        {{ form.xtal2T }}
+                    </div>
+                    <div class="row">
+                        {{ form.tcbool }}
+                        <label style="width:300px;">{{ form.tempCorr.label }}</label>
+                        To energy scale
+                    </div>
+                    <div class="row">
+                        {{ form.sbool }}
+                        <label style="width:300px;">{{ form.signal.label }}</label>
+                        {{ form.signal }}
+                    </div>
+                    <div class="row">
+                        {{ form.snbool }}
+                        <label style="width:300px;">{{ form.signalNorm.label }}</label>
+                    </div>
+                    <div class="row">
+                        {{ form.nbool }}
+                        <label style="width:300px;">{{ form.norm.label }}</label>
+                        {{ form.norm }}
+                    </div>
+                    <div class="row">
+                        {{ form.nfbool }}
+                        <label style="width:300px;">{{ form.normFac.label }}</label>
+                        At each data point
+                    </div>
+                    <div class="row">
+                        {{ form.xbool }}
+                        <label style="width:300px;">{{ form.extra.label }}</label>
+                        {{ form.extra }}
+                    </div>
+                </div>
+                <div class="col-xs-6" id="plot_spot">
+                    <div id="plot">
+                        {{code|safe}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <span class="pull-right">
+            <button onclick="advance()" class="btn btn-primary btn-lg" title="Proceed with files to processing">
+                Done
+            </button>
+        </span>
+    </div>
+</div>
+<script type="text/javascript" src="/static/checkbox.js"></script>
+</body>
+</html>

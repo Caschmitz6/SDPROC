@@ -1,0 +1,16 @@
+.bordered{
+    border: 1px solid black;
+}
+
+
+.inlinel { float:left; }
+.inliner { float:right; }
+.inline-name { float:left; margin-top: 22px; margin-left:70px;}
+
+.clearBoth { clear:both; }
+
+.comment { margin-bottom: 50px;}
+
+
+a {color: #337AB7; text-decoration: none; }
+a:hover {color: #23527C; text-decoration: underline; cursor: pointer;}

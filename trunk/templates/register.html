@@ -1,0 +1,170 @@
+<!--
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initialscale=1" name="viewport">
+    <title>Scandataproc</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link href="/static/register/register.css" rel="stylesheet">
+</head>
+<body role="document">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="login">
+                Scandataproc
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="upload">
+                        Manage Files
+                    </a>
+                </li>
+                <li>
+                    <a href="select">
+                        Select Session
+                    </a>
+                </li>
+                <li>
+                    <a href="data">
+                        Scans
+                    </a>
+                </li>
+                <li>
+                    <a href="process">
+                        Sum
+                    </a>
+                </li>
+                <li>
+                    <a href="modifyDAT">
+                        Modify DAT
+                    </a>
+                </li>
+                <li>
+                    <a href="profile">
+                        Profile
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br/>
+<br/>
+<br/>
+<div class="title text-center">
+    <h1>Register</h1>
+</div>
+<br/>
+<br/>
+<form method=post action="">
+    <div class="text-center">
+        <div class="regInputs">
+            <table>
+                {% set counter = 0 %}
+                {% for field in form %}
+                    {% if counter == 0 or counter == 3 or counter == 5 %}
+                        <tr>
+                    {% endif %}
+                        <td>{{ field.label }}</td>
+                        <td>{{ field(size=20) }}</td>
+                        <td>
+                            {% if field.errors %}
+                            <ul class=errors>
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </td>
+                    {% if counter == 2 or counter == 4 or counter == 6 %}
+                        </tr>
+                    {% endif %}
+                    {% set counter = counter + 1 %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="text-center">
+        <div class="regBtn">
+            <input type="submit" class="btn btn-primary btn-lg regStretch" value="Request Account">
+        </div>
+    </div>
+</form>
+<br/>
+<br/>
+<div class="text-center">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    Password Strength Error:
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+</div>
+<footer>
+    <div class="text-center">
+        <p>Copyright (c) UChicago Argonne, LLC. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

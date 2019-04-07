@@ -1,0 +1,539 @@
+<!--
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+{% from "__autoindex__/macros.html" import thead
+with context %}
+<!--This is how you comment-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initialscale=1" name="viewport">
+    <title>Scandataproc</title>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
+    <link href="/static/format/navigator.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/format/select.js"></script>
+    <link href="/static/format/teststyle.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/mpld3.v0.2.js"></script>
+
+
+</head>
+<body role="document">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="login">
+                Scandataproc
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="upload">
+                        Manage Files
+                    </a>
+                </li>
+                <li>
+                    <a href="select">
+                        Select Session
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="data">
+                        Scans
+                    </a>
+                </li>
+                <li>
+                    <a href="process">
+                        Sum
+                    </a>
+                </li>
+                <li>
+                    <a href="modifyDAT">
+                        Modify DAT
+                    </a>
+                </li>
+                <li>
+                    <a href="profile">
+                        Profile
+                    </a>
+                </li>
+                {% if user.isAdmin == 1 %}
+                <li>
+                    <a href="admin">
+                        Admin
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <div class="margin-info pull-right">
+                    <p class="margin-text" align="right">Logged in as <a href="/profile">{{ user.username }}</a>
+                        <br/>
+                        <a href="/db">Logbook</a>
+                        <br/>
+                        <a onclick="logout()">Logout</a>
+                        <br/>
+                    </p>
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="fileModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Choose a File</h4>
+            </div>
+            <div class="modal-body">
+                {% block header %}{% endblock %}
+                {% block table %}
+                <table id="filePicker">
+                    <thead class="fixedHead">
+                        {{ thead() }}
+                    </thead>
+                    <tbody class="scrollable">
+                        {% if data %}
+                            {% for post in data %}
+                                {% set auths = post.authed.split(',') %}
+                                {% for aID in auths %}
+                                    {% if aID|int() == user.get_id()|int() %}
+                                        <tr class="item fixedHead" ondblclick="moveFile()">
+                                            <td class="name" colspan="2" id="{{ post.id }}">
+                                                {%- if post.name == ".." -%}
+                                                Parent folder
+                                                {%- else -%}
+                                                {{ post.name }}
+                                                {%- endif -%}
+                                            </a></td>
+                                            <td class="modified">
+                                                <time datetime="{{ post.modified }}">{{ post.modified }}</time>
+                                            </td>
+                                            <td class="size">
+                                                {% if post.size %}
+                                                {{ post.size }}
+                                                {% else %}
+                                                -
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                {% endblock %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ssModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Save Session As</h4>
+            </div>
+            <div class="ssModalBody">
+                <div class="col-xs-6">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <label for="ssName" class="ssName">Name:</label>
+                    <input type="text" class="form-control ssName" id="ssName">
+                </div>
+                <div class="col-xs-6">
+                    <label for="ssComment">Comment:</label>
+                    <textarea class="form-control" rows="5" id="ssComment"></textarea>
+                </div>
+            </div>
+            <div class="ssModalFooter">
+                <div class="col-xs-6">
+                    <span class="centerBlock">
+                        <button type="button" onclick="saveSes()" class="btn btn-primary btn-default" data-dismiss="modal">Save</button>
+                    </span>
+                </div>
+                <div class="col-xs-6">
+                    <span class="centerBlock">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="headerModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">File Header</h4>
+            </div>
+            <div class="ssHeaderBody">
+                <div id="headerText">
+                </div>
+            </div>
+            <div class="ssModalFooter">
+                <span class="centerBlock">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center">
+    <hr class="separator">
+    <div class="allCols">
+        <div class="form-group">
+            <div class="selectGroup">
+                <div class="sessionGroup">
+                    <div class="sessionName">
+                        <b class="sessionText" id="sesName">{{ ses }}</b>
+                    </div>
+                    <div class="btn-group-vertical stretcher">
+                        <button class="btn btn-primary btn-sm sesBtn" data-toggle="modal" data-target="#ssModal" onclick="populateName()" title="Save this session so that it can be accessed later">
+                            Save Session
+                        </button>
+                        <button onclick="advance()" class="btn btn-primary btn-sm sesBtn" title="Proceed with files to generate a DAT">
+                            Sum
+                        </button>
+                    </div>
+                </div>
+                <div class="addDropGroup">
+                    <div class="plusBtn">
+                        <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#fileModal">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="minusBtn">
+                        <button type="button" class="btn btn-primary btn-md" onclick="deleteCmeta()">
+                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="selectorGroup">
+                        <label id="sel1Label" for="sel1">Select = View | Check = Add to sum</label>
+                        <div class="pane" id="pane">
+                            <table id="sel1" cellspacing="0" style="text-align: center; margin: auto;">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- <select size="7" class="form-control selector" id="sel1"></select> -->
+                </div>
+            </div>
+            <div class="inline">
+                <div class="fileGroup">
+                    <div class="fileName" id="fileName">
+                        None
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div>
+                        <button onclick="headerFile()" class="btn btn-primary btn-sm" title="Display the file's header information">
+                            Header
+                        </button>
+                        <button onclick="outputFile()" class="btn btn-primary btn-sm" title="Display or save output file">
+                            Output
+                        </button>
+                        <button type="button" onclick="log()" class="btn btn-primary btn-sm" id="logbtn">
+                            Add to Logbook
+                        </button>
+                    </div>
+                </div>
+                <div class="floatL commentGroup" id="commentGroup">
+                    <div class="commentLabel">Comment:</div>
+                    <textarea class="form-control commentBox" rows="5" id="comment" name="comment"></textarea>
+                </div>
+                <!--
+                <div class="unitGroup">
+                    <label for="unitBtn">Unit</label>
+                    <button id="unitBtn" type="button" class="btn btn-default dropdown-toggle setSize" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">meV<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu unitDrop">
+                        <li><a onclick="setUnit(event)">meV</a></li>
+                        <li><a onclick="setUnit(event)">keV</a></li>
+                    </ul>
+                </div>
+                -->
+            </div>
+            <div class="floatClear"></div>
+            <form id="meta-form" method=post action="" remote="true">
+                <div class="formVariables">
+                    <input type="hidden" name="idnum" id="idnum">
+                    <input type="hidden" name="agaE" id="agaE" value="{{ againstE }}">
+                    <input type="hidden" name="unit" id="unit">
+                    <input type="hidden" name="outType" id="outType">
+                    <input type="hidden" name="cordData" id="cordData">
+                    <input type="hidden" name="session" id="session">
+                    <div id="metaForm_id">
+                        <div>
+                            <span class="pull-left">
+                                {{ form.ebool }}
+                            </span>
+                            <label style="width:300px;">{{ form.energy.label }}</label>
+                            {{ form.energy }}
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.ecbool }}
+                            </span>
+                            <label class="pull-left" style="width:300px;">{{ form.energyCalc.label }}</label>
+                            From xtal angles
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.etcbool }}
+                            </span>
+                            <label class="pull-left" style="width:300px;">{{ form.energyTempCalc.label }}</label>
+                            From xtal angles & temps
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.a1bool }}
+                            </span>
+                            <label style="width:300px;">{{ form.xtal1A.label }}</label>
+                            {{ form.xtal1A }}
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.a2bool }}
+                            </span>
+                            <label style="width:300px;">{{ form.xtal2A.label }}</label>
+                            {{ form.xtal2A }}
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.t1bool }}
+                            </span>
+                            <label style="width:300px;">{{ form.xtal1T.label }}</label>
+                            {{ form.xtal1T }}
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.t2bool }}
+                            </span>
+                            <label style="width:300px;">{{ form.xtal2T.label }}</label>
+                            {{ form.xtal2T }}
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.tcbool }}
+                            </span>
+                            <label class="pull-left" style="width:300px;">{{ form.tempCorr.label }}</label>
+                            To energy scale
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.sbool }}
+                            </span>
+                            <label style="width:300px;">{{ form.signal.label }}</label>
+                            {{ form.signal }}
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.snbool }}
+                            </span>
+                            <label class="pull-left" style="width:300px;">{{ form.signalNorm.label }}</label>
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.nbool }}
+                            </span>
+                            <label style="width:300px;">{{ form.norm.label }}</label>
+                            {{ form.norm }}
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.nfbool }}
+                            </span>
+                            <label style="margin-left:-50px;width:300px;">{{ form.normFac.label }}</label>
+                            <div style="margin-right:30px;float:right;">
+                                At each data point
+                            </div>
+                        </div>
+                        <div class="floatClear"></div>
+                        <div>
+                            <span class="pull-left">
+                                {{ form.xbool }}
+                            </span>
+                            <label style="width:300px;">{{ form.extra.label }}</label>
+                            {{ form.extra }}
+                        </div>
+                    </div>
+                </div>
+                <div class="plotLoc" id="plot_spot">
+                    <div id="plot">
+                        {{code|safe}}
+                    </div>
+                </div>
+            </form>
+            <div class="floatClear"></div>
+            <div class="HRM-select dropup">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="HRM" aria-haspopup="true"
+                        aria-expanded="false">Fe-inline-1meV<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu hrmMenu" id="HRMdd">
+                    {% if hrm %}
+                        {% for post in hrm %}
+                            <li><a>{{  post.name }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="fitGroup">
+                <div class="input-group" id="peakGroup">
+                    <div class="input-group-btn">
+                        <button id="fitType" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">Fit around max<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a onclick="aroundMax()">Fit around max</a></li>
+                            <li><a onclick="nearestPeak()">Fit around point</a></li>
+                            <li><a onclick="atPoint()">Peak at point</a></li>
+                        </ul>
+                    </div>
+                    <input type="text" id="peakLocation" class="form-control" aria-label="...">
+                    <input type="text" class="form-control" id="localRange" style="display: none;">
+                </div>
+                <div class="peakWidth">
+                        <input type="text" id="pWInput" class="form-control" aria-label="..." placeholder="Peak fit range (meV)">
+                </div>
+                <div class="peakSignal dropup">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="peakSignalType" aria-haspopup="true"
+                            aria-expanded="false">Signal<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu centMenu" id="peakSignalDD">
+                        <li><a onclick="setPeakSignal(event)">Signal</a></li>
+                        <li><a onclick="setPeakSignal(event)">Signal Normalized</a></li>
+                    </ul>
+                </div>
+                <div class="peakEnergy dropup">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="peakEnergyType" aria-haspopup="true"
+                            aria-expanded="false">Energy<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu centMenu" id="peakEnergyDD">
+                        <li><a onclick="setPeakEnergy(event)">Energy</a></li>
+                        <li><a onclick="setPeakEnergy(event)">Energy xtal</a></li>
+                        <li><a onclick="setPeakEnergy(event)">Energy xtal w/T</a></li>
+                    </ul>
+                </div>
+                <div class="fitMeth dropup">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="fitMethod" aria-haspopup="true"
+                            aria-expanded="false">Centroid<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu centMenu" id="fitMethodDD">
+                        <li><a>None yet implemented</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="fitBtn" id="fitBtn">
+                <button class="btn btn-primary btn-md" onclick="fitPeak(0)" title="Apply selected fitting technique to plot">
+                    Fit
+                </button>
+            </div>
+            <div class="AEGroup">
+                <div id="currentAE" style="display: none;">{{ againstE }}</div>
+                <label for="againstE">X-Selection</label>
+                <button id="againstE" type="button" class="btn btn-default dropdown-toggle setSize" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">Point #<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu aeDrop">
+                    <li><a onclick="setAE(event)">Point #</a></li>
+                    <li><a onclick="setAE(event)">Energy</a></li>
+                    <li><a onclick="setAE(event)">Energy xtal</a></li>
+                    <li><a onclick="setAE(event)">Energy xtal w/T</a></li>
+                    <li><a onclick="setAE(event)">Energy Fitted</a></li>
+                </ul>
+            </div>
+            <div id="shiftVal" class="shiftVal">
+                {% if shiftVal is defined %}
+                    Shifted:
+                    {{ shiftVal }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="text-center">
+        <p>Copyright (c) UChicago Argonne, LLC. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,446 @@
+/*
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+*/
+.data-row{margin-right:-15px;margin-left:-15px;height:100px}
+.scan-list, .form-control{margin-bottom:20px}
+.col-center{
+    margin: auto;
+    width: 20%;
+    padding: 10px;
+}
+
+td {
+padding: 10px;
+}
+
+.allCols{
+    display: inline-block;
+    text-align: center;
+    margin-top: 70px;
+}
+
+.centerBlock{
+            display: table;
+            margin: 0 auto;
+            }
+
+.form-group{
+    display: inline-block;
+    text-align: center;
+}
+
+
+select[multiple].scan-list{
+    padding: 0 24px
+}
+
+.margin-info{
+    position: absolute;
+    padding-right: 20px;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+}
+
+.margin-text{
+    color: gray;
+    margin: 0 auto;
+}
+
+
+.floatClear {
+    clear: both;
+}
+
+.bootbtn{
+    position: relative;
+}
+
+.bootlbl{
+    position: relative;
+}
+
+.highlight{background-color: #7498c9;}
+
+.lightlight{background-color: #e6f2ff;}
+
+.ssModalFooter{
+    position: relative;
+    height:70px;
+    width:auto;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 20px;
+}
+
+.ssModalBody{
+    position: relative;
+    height:160px;
+    width:auto;
+}
+
+.ssHeaderBody{
+    position: relative;
+    height: 300px;
+    width: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.ssName{
+    position: relative;
+    bottom: 20px !important;
+}
+
+.columnEdit{
+    border-radius: 10px;
+    border: 1px;
+}
+
+.content-height .ui-dialog-content{
+    height: 80px;
+}
+
+/*---------Session Header Section----------*/
+.selectGroup{
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.sessionGroup{
+    float: left;
+    margin-right: 20px;
+    margin-left: 60px;
+    margin-top: 15px;
+    padding: 10px;
+    width: 30%;
+}
+
+.sesBtn{
+    display: block;
+    width: 50% !important;
+    margin: 0 auto;
+    margin-left: auto !important;
+}
+
+.stretcher{
+    width: 100%;
+}
+
+.sessionName{
+    margin-bottom: 5px;
+    font-weight:bold;
+    border:1px dotted;
+    padding:10px;
+}
+
+.addDropGroup{
+    float: left;
+    position: relative;
+    left: 10%;
+    margin-right: 10px;
+}
+
+.selectorGroup{
+    float: left;
+    position: relative;
+    left: 10%;
+    width: 40%;
+}
+
+.separator{
+    position: absolute;
+    top: 225px;
+    width: 100%;
+    margin-left: -2px;
+    margin-right: auto;
+    border-top-style: dashed;
+    border-width: 1px;
+}
+
+.pane{
+    display: inline-block;
+    overflow-y: scroll;
+    max-height: 113px;
+}
+
+.fileNameCell{
+    width:300px;
+}
+
+/*----------------Main Page Left Section---------*/
+.fileGroup{
+    position: relative;
+    left: 10%;
+    margin-top: 20px;
+    padding: 5px;
+}
+
+.commentGroup{
+    position: relative;
+    margin-left: 18.5%;
+    margin-top: 23px;
+    width: 600px;
+}
+
+.logCommentGroup{
+    position: relative;
+    margin-left: 23%;
+    margin-top: 10px;
+    width: 600px;
+}
+
+.commentLabel{
+    margin-top: 40px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.commentBox{
+    float: left;
+    width: 500px;
+    height: 100px !important;
+}
+
+.fileName{
+    margin-bottom: 5px;
+    font-weight:bold;
+    border:1px dotted;
+    padding:10px;
+    width: 100%;
+}
+
+.fileButtons{
+    width: auto;
+    height: 100%;
+}
+
+.formVariables{
+    float: left;
+    margin-top: 10px;
+}
+
+.HRM-select{
+    position: relative;
+    width: 50%;
+    bottom: 13px;
+    left: -44px;
+    top: -10px;
+}
+
+.fitGroup{
+    position: relative;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3d75c0;
+    border-radius: 5px;
+    width: 510px;
+    right: 10px;
+    height: 165px;
+}
+
+.fitBtn{
+    position: relative;
+    display: inline-block;
+    top: -95px;
+    right: -100px;
+}
+
+.fitBtnShifted{
+    position: relative;
+    display: inline-block;
+    top: -95px;
+    left: 180px;
+}
+
+.peakWidth{
+    position: relative;
+    width: 488px;
+    top: 34px;
+    left: 10px;
+}
+
+.fitMeth{
+    position: absolute;
+    display: inline-block;
+    left: 410px;
+    bottom: 16px;
+}
+
+.peakSignal{
+    float: left;
+    position: absolute;
+    margin-top: 25px;
+    margin-left: 10px;
+}
+
+.peakEnergy{
+    float: left;
+    position: absolute;
+    margin-top: 25px;
+    left: 200px;
+}
+
+.shiftVal{
+    position: relative;
+    display: inline-block;
+    top: -95px;
+    left: 200px;
+}
+
+/*----------Right Column Main Window------------*/
+
+.AEGroup{
+    position: relative;
+    float: right;
+    right: 200px;
+    top: -190px;
+}
+
+.aeDrop{
+    margin-left: 86px;
+    margin-top: -1px;
+}
+
+.input-group{
+    position: relative;
+    top: 20px;
+    width: 488px;
+    left: 10px;
+}
+
+.doneBtn{
+    position: relative;
+    bottom: 150px;
+    left: 1000px;
+}
+
+.splitInput.input-group input{
+    width: 50%;
+}
+
+body{
+    width: 100%;
+    margin: auto;
+}
+
+.plusBtn{
+    margin-top: 40px;
+}
+
+.minusBtn{
+    margin-top: 20px;
+}
+
+.selector{
+    height: 115px !important;
+}
+
+.plotLoc{
+    margin-top: -10px;
+    float:right;
+}
+
+.inline div{
+    float: left;
+}
+
+.unitGroup{
+    position: relative;
+    left: 210px;
+}
+
+.logBtn{
+    position: relative;
+    left: 350px;
+    width: 0px;
+}
+
+.hrmMenu{
+    margin-left: 200px;
+}
+
+.setSize{
+    width: 167px;
+}
+
+.fixedHead{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.scrollable{
+    display: block;
+    height: 350px;
+    overflow: auto;
+}
+
+svg#legendSVG{
+    height: 100px;
+    width: 150px;
+    background-color: #ccc;
+    overflow: auto;
+}
+
+.unitDrop{
+    margin-left: 35px;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+}
+
+body{
+    margin: 0 0 30px;
+}
+
+html{
+    position: relative;
+    min-height: 100%;
+}

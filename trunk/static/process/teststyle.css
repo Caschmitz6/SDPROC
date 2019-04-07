@@ -1,0 +1,291 @@
+/*
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+*/
+.data-row{margin-right:-15px;margin-left:-15px;height:100px}
+.scan-list, .form-control{margin-bottom:20px}
+.col-center{
+    margin: auto;
+    width: 20%;
+    padding: 10px;
+}
+
+td {
+padding: 10px;
+}
+
+.centerBlock{
+            display: table;
+            margin: 0 auto;
+            }
+
+select[multiple].scan-list{
+    padding: 0 24px
+}
+
+.margin-info{
+    position: absolute;
+    padding-right: 20px;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+}
+
+.margin-text{
+    color: gray;
+    margin: 0 auto;
+}
+
+/*---------Session Header Section----------*/
+
+.selectGroup{
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    margin-top: 100px;
+    left: -100px;
+}
+
+.sesGroup{
+    float: left;
+    width: 40%;
+    margin-right: -100px;
+    margin-left: 180px;
+}
+
+.sessionName{
+    position: relative;
+    display: inline-block;
+    font-weight:bold;
+    border:1px dotted;
+    padding:10px;
+    width: 80%;
+}
+
+.continue{
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    width: 40%;
+}
+
+.secondBtns{
+    float: left;
+    position: relative;
+    width: 40%;
+}
+
+.output{
+    position: relative;
+    display: inline-block;
+    width: 40%;
+    margin-top: 5px;
+}
+
+.logbook{
+    position: relative;
+    display: inline-block;
+    width: 40%;
+    margin-top: 17px;
+}
+
+.separator{
+    position: absolute;
+    top: 225px;
+    width: 100%;
+    margin-left: -2px;
+    margin-right: auto;
+    border-top-style: dashed;
+    border-width: 1px;
+    left: 0px;
+}
+
+/*---------Session Data Section----------*/
+
+.selectorGroup{
+    float: left;
+    position: relative;
+    text-align: center;
+    width: 40%;
+    left: -100px;
+}
+
+.pane{
+    display: inline-block;
+    overflow-y: scroll;
+    max-height: 500px;
+}
+
+.sel1{
+    width: 100%;
+}
+
+.fileNameCell{
+    width:300px;
+}
+
+.bootbtn{
+    position: absolute;
+    left: 550px;
+    z-index: 1;
+}
+
+.bootlbl{
+    position: absolute;
+    left: 398px;
+    top:241px;
+    z-index: 1;
+}
+
+.highlight{background-color: #7498c9;}
+
+.lightlight{background-color: #e6f2ff;}
+
+.ssModalFooter{
+    position: relative;
+    height:70px;
+    width:auto;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 20px;
+}
+
+.ssModalBody{
+    position: relative;
+    height:160px;
+    width:auto;
+}
+
+.columnEdit{
+    border-radius: 10px;
+    border: 1px;
+}
+
+.content-height .ui-dialog-content{
+    height: 80px;
+}
+
+.saveSes{
+    position: relative;
+    left: 180px;
+    bottom: 50px;
+}
+
+.maxLabel{
+    position: relative;
+    right: 770px;
+    top: 0px;
+}
+
+.legend{
+    position: relative;
+}
+
+.maxdata{
+    position: relative;
+    right:100px;
+}
+
+.plot{
+    position: relative;
+    bottom: 80px;
+    float: left;
+    width: 50%;
+    margin-left: 100px;
+    margin-top: 50px;
+    left: -250px;
+}
+
+.input-group{
+    position: relative;
+    left: 200px;
+    top: 40px;
+    width: 230px;
+}
+
+.binLabel{
+    position: relative;
+    top: 70px;
+    left: 130px;
+}
+
+.linearRad{
+    position: relative;
+    top: 30px;
+    left: 16px;
+}
+
+.linLabel{
+    position: relative;
+    top: 27px;
+    right: 8px;
+}
+
+.settings{
+    position: relative;
+    left: 225px;
+    top: -60px;
+}
+
+.procButton{
+    position: relative;
+    float: right;
+    margin-top: 20px;
+    right: 100px;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+}
+
+body{
+    margin: 0 0 30px;
+}
+
+html{
+    position: relative;
+    min-height: 100%;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initialscale=1" name="viewport">
+    <title>Scandataproc</title>
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="/static/register.css" rel="stylesheet">
+    <script src="/static/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/static/mpld3.v0.2.js"></script>
+</head>
+<body role="document">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="login">
+                Scandataproc
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="select">
+                        Data Select
+                    </a>
+                </li>
+                <li>
+                    <a href="data">
+                        Data Formatting
+                    </a>
+                </li>
+                <li>
+                    <a href="process">
+                        Data Processing
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br/>
+<br/>
+<br/>
+<div class="center-block">
+    <div class="title text-center">
+        <h1>Register</h1>
+    </div>
+    <br/>
+    <br/>
+    <div id="content" class="col-center">
+        <form method=post action="">
+          <table>
+            {% for field in form %}
+              <tr>
+                  <td>{{ field.label }}</td>
+                  <td>{{ field(size=20) }}</td>
+                  <td>
+                    {% if field.errors %}
+                      <ul class=errors>
+                      {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </td>
+              </tr>
+            {% endfor %}
+          </table>
+          <input type="submit" value="Register">
+        </form>
+    </div>
+</div>
+</body>
+</html>

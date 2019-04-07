@@ -1,0 +1,20 @@
+.data-row{margin-right:-15px;margin-left:-15px;height:100px}
+.scan-list, .form-control{margin-bottom:20px}
+.col-center{
+    margin: auto;
+    width: 30%;
+    padding: 10px;
+}
+
+td {
+padding: 10px;
+}
+
+.centerBlock{
+            display: table;
+            margin: 0 auto;
+            }
+
+select[multiple].scan-list{
+    padding: 0 24px
+}

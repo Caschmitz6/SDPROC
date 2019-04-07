@@ -1,0 +1,332 @@
+/*
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+*/
+.navGroup{
+    margin-top: -100px;
+    position: relative;
+    right: 20%;
+    display: inline-block;
+    text-align: center;
+    width: 20%;
+}
+
+.fileSesNavGroup{
+    top: -100px;
+    position: relative;
+    right: 20%;
+    display: inline-block;
+    text-align: center;
+    width: 20%;
+}
+
+.fileNav{
+    margin-top: -50px;
+}
+
+.sessionNav{
+    margin-top: -50px;
+}
+
+.userNav{
+    margin-top: -50px;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 350px;
+}
+
+.buttonGroup{
+    margin-bottom: 60px;
+}
+
+.hrmButton{
+    margin-bottom: 10px;
+}
+
+.highlight{background-color: #7498c9;}
+
+.lightlight{background-color: #e6f2ff;}
+
+
+.modFiltInput{
+    width: 20%;
+}
+
+.hrmDetailTable{
+    position: relative;
+    height: auto;
+    width: 95% !important;
+    left: 2.5%;
+    margin-top: 20px;
+}
+
+.finishHrm{
+    position: relative;
+    margin-top: 20px;
+    left: 35%;
+}
+
+.cancelHrm{
+    position: relative;
+    margin-top: 20px;
+    left: 50%;
+}
+
+.borderedEntry{
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3d75c0;
+    border-radius: 5px;
+}
+
+.userFileTable{
+    width: 100%;
+    height:auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height:400px;
+    margin-right: 10px;
+    margin-left: 27px;
+    float: left;
+}
+
+.userSessionTable{
+    width: 100%;
+    height:auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height:350px;
+    margin-right: 10px;
+    margin-left: 10px;
+    float: left;
+}
+
+.fileNameTable{
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 75%;
+    height: auto;
+    width: 30%;
+    left: 35%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3d75c0;
+    border-radius: 5px;
+}
+
+.sessionUserTable{
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 75%;
+    height: auto;
+    width: 30%;
+    left: 35%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3d75c0;
+    border-radius: 5px;
+}
+
+.userFileFilt{
+    margin-top: 30px;
+    margin-left: 100px;
+    margin-bottom: 6px;
+}
+
+.userSessionFilt{
+    margin-top: -40px;
+    margin-left: 370px;
+}
+
+.addS{
+    margin-right: 30px;
+    margin-left: 40px;
+}
+.addF{
+    margin-right: 50px;
+    margin-left: 70px;
+}
+
+.doubleGroupF{
+    margin-top: 10px;
+    float: left;
+}
+
+.doubleGroupS{
+    margin-top: 10px;
+    float: left;
+}
+
+.closeBtn{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.filtInput{
+    margin-top: -50px;
+    margin-bottom: 50px;
+}
+
+.singularFilt{
+    display: inline-block;
+    margin-top: 30px;
+    margin-bottom: 6px;
+}
+
+.singleAdd{
+    margin-right: 20px;
+}
+
+.singleGroup{
+    margin-top: 10px;
+}
+
+.clearFloat{
+    clear: both;
+}
+
+.notifications{
+    margin-left: 45%;
+    margin-top: 10%;
+    width: 40%;
+}
+
+.delUser{
+    margin-top: -5%;
+}
+
+.freezeChk{
+    margin-left: 70%;
+    margin-top: -5%;
+}
+
+.noneDet{
+    margin-left: 5%;
+}
+
+.nested{
+    z-index: 1042;
+}
+
+.outer{
+    z-index: 1041;
+}
+
+.nestedTable{
+    display: inline-block;
+    overflow-y: hidden !important;
+    width: 90%;
+}
+
+.fileModalBody{
+    position: relative;
+    height: 200px;
+    width: auto;
+}
+
+.ssModalFooter{
+    position: relative;
+    margin-top: 30px;
+    width: auto;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 20px;
+}
+
+.margin-info{
+    position: absolute;
+    padding-right: 20px;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+}
+
+.margin-text{
+    color: gray;
+    margin: 0 auto;
+}
+
+
+.fixedHead{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.scrollable{
+    display: block;
+    height: 350px;
+    overflow: auto;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+}
+
+body{
+    margin: 0 0 30px;
+}
+
+html{
+    position: relative;
+    min-height: 100%;
+}
+
+.disabled{
+    pointer-events: none;
+    opacity: 1;
+}
+
+.borderTop{
+    border-top: 1px solid #e5e5e5;
+}
+
+.ModalBody{
+    padding-bottom: 20px;
+}

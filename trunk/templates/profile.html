@@ -1,0 +1,226 @@
+<!--
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scandataproc</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
+    <link href="/static/profile/profile.css" rel="stylesheet" type="text/css">
+    <script src="/static/profile/profile.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="login">
+                Scandataproc
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="upload">
+                        Manage Files
+                    </a>
+                </li>
+                <li>
+                    <a href="select">
+                        Select Session
+                    </a>
+                </li>
+                <li id="navData">
+                    <a href="data">
+                        Scans
+                    </a>
+                </li>
+                <li id="navProcess">
+                    <a href="process">
+                        Sum
+                    </a>
+                </li>
+                <li>
+                    <a href="modifyDAT">
+                        Modify DAT
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="profile">
+                        Profile
+                    </a>
+                </li>
+                {% if user.isAdmin == 1 %}
+                <li>
+                    <a href="admin">
+                        Admin
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <div class="margin-info pull-right">
+                    <p class="margin-text" align="right">Logged in as <a href="/profile">{{ user.username }}</a>
+                        <br/>
+                        <a href="/db">Logbook</a>
+                        <br/>
+                        <a onclick="logout()">Logout</a>
+                        <br/>
+                    </p>
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="notifModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="notifTitle">Profile:</h4>
+            </div>
+            <div class="notifModalBody" id="notifID">
+                <div class="notifTable text-center">
+                    <table id="notifTable">
+                        <tbody class="notifBod">
+                            {% if userProf %}
+                                <tr>
+                                    <td><b class="pull-left">Username:</b>{{ userProf.username }}</td>
+                                    <td><b class="pull-left">Institution:</b>{{ userProf.institution }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b class="pull-left">Full Name:</b>{{ userProf.fullName }}</td>
+                                    <td><b class="pull-left">Reason:</b>{{ userProf.reason }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b class="pull-left">Email:</b>{{ userProf.email }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center">
+    <div class="pageInfo">
+        <div class="proInfo" id="profileInfo">
+            <table>
+                <tbody class="thisProf">
+                    <tr>
+                        <td class="proCell"><b class="pull-left">Username:</b>{{ userProf[0].username }}</td>
+                        <td class="proCell"><b class="pull-left">Institution:</b>{{ userProf[0].institution }}</td>
+                    </tr>
+                    <tr>
+                        <td class="proCell"><b class="pull-left">Full Name:</b>{{ userProf[0].fullName }}</td>
+                        <td class="proCell"><b class="pull-left">Comment Char:</b><input type="text" class="form-control shorten" placeholder='{{ userProf[0].commentChar }}' id="proChar"></td>
+                    </tr>
+                    <tr>
+                        <td class="proCell"><b class="pull-left">Email:</b><input type="text" class="form-control shorten" placeholder='{{ userProf[0].email }}' id="proEmail"></td>
+                        <td class="proCell"><b class="pull-left">Password:</b><input type="password" class="form-control shorten" id="proPass"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-primary btn-md updateBtn" onclick="updateProf()">Update Profile</button>
+        </div>
+        <div class="notifications" id="notifications">
+            <h3>Notifications:</h3>
+            <table>
+                <tbody>
+                    {% if notifications %}
+                        {% for task in notifications %}
+                            <tr class="item notifTR">
+                                <td class="name" colspan="2" id="{{ task.id }}">
+                                    {{ task.type }}
+                                </td>
+                                <td>
+                                    {{ task.name }}
+                                </td>
+                                <td>
+                                    <button class="btn btn-default" onclick="showInfo({{ task.id }})">Info</button>
+                                </td>
+                                <td>
+                                    {{ task.time }}
+                                </td>
+                                <td>
+                                    <button class="btn btn-success" onclick="approve({{ task.id }})">Approve</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" onclick="decline({{ task.id }})">Decline</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        No Notifications
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="text-center">
+        <p>Copyright (c) UChicago Argonne, LLC. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

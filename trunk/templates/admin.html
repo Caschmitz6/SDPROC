@@ -1,0 +1,789 @@
+<!--
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+{% from "__autoindex__/select/macros.html" import thead
+with context %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scandataproc</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
+    <link href="/static/admin/navigator.css" rel="stylesheet" type="text/css">
+    <link href="/static/admin/admin.css" rel="stylesheet" type="text/css">
+    <script src="/static/admin/admin.js"></script>
+</head>
+<body role="document">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="login">
+                Scandataproc
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="upload">
+                        Manage Files
+                    </a>
+                </li>
+                <li>
+                    <a href="select">
+                        Select Session
+                    </a>
+                </li>
+                <li id="navData">
+                    <a href="data">
+                        Scans
+                    </a>
+                </li>
+                <li id="navProcess">
+                    <a href="process">
+                        Sum
+                    </a>
+                </li>
+                <li>
+                    <a href="modifyDAT">
+                        Modify DAT
+                    </a>
+                </li>
+                <li>
+                    <a href="profile">
+                        Profile
+                    </a>
+                </li>
+                {% if user.isAdmin == 1 %}
+                <li class="active">
+                    <a href="admin">
+                        Admin
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <div class="margin-info pull-right">
+                    <p class="margin-text" align="right">Logged in as <a href="/profile">{{ user.username }}</a>
+                        <br/>
+                        <a href="/db">Logbook</a>
+                        <br/>
+                        <a onclick="logout()">Logout</a>
+                        <br/>
+                    </p>
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="hrmModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="hrmTitle">HRMs</h4>
+            </div>
+            <div class="ModalBody" id="hrmID">
+                <div class="hrmTable text-center">
+                    <table id="hrmTable">
+                        <tbody class="hrmBody">
+                            {% if hrms %}
+                                {% for post in hrms %}
+                                    <tr class="item" onclick="showHRM({{ post.id }})">
+                                        <td id="{{ post.id }}">{{ post.name }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                No HRMs Detected
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="text-center singleGroup">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="addHRM()">Add HRM</button>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="editHRM()">Edit HRM</button>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="removeHRM()">Remove HRM</button>
+                    </div>
+                </div>
+                <div class="row" id="hrmDetails">
+                    <table class="hrmDetailTable" id="hrmDetailTable" style="display: none;">
+                        <tbody class="hrmDetailBody">
+                            {% if hrmData %}
+                                <tr>
+                                    <td><b class="pull-left">Name: </b><div id="hrmName">{{ hrmData.name }}</div></td>
+                                    <td><b class="pull-left">hrm_e0: </b><div id="hrm_e0">{{ hrmData.hrm_e0 }}</div></td>
+                                    <td><b class="pull-left">hrm_geo: </b><div id="hrm_geo">{{ hrmData.hrm_geo }}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><b class="pull-left">hrm_bragg1: </b><div id="hrm_bragg1">{{ hrmData.hrm_bragg1 }}</div></td>
+                                    <td><b class="pull-left">hrm_alpha1: </b><div id="hrm_alpha1">{{ hrmData.hrm_alpha1 }}</div></td>
+                                    <td><b class="pull-left">hrm_theta1_sign: </b><div id="hrm_theta1_sign">{{ hrmData.hrm_theta1_sign }}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><b class="pull-left">hrm_bragg2: </b><div id="hrm_bragg2">{{ hrmData.hrm_bragg2 }}</div></td>
+                                    <td><b class="pull-left">hrm_alpha2: </b><div id="hrm_alpha2">{{ hrmData.hrm_alpha2 }}</div></td>
+                                    <td><b class="pull-left">hrm_theta2_sign: </b><div id="hrm_theta2_sign">{{ hrmData.hrm_theta2_sign }}</div></td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <div class="hrmDetailEdit" id="hrmDetailEdit" style="display: none;">
+                        <table class="hrmDetailTable">
+                            <tbody class="hrmDetailEdit">
+                                <tr>
+                                    <td><b class="pull-left">Name: </b><div contenteditable id="ehrmName">Name</div></td>
+                                    <td><b class="pull-left">hrm_e0: </b><div contenteditable id="ehrm_e0">e0</div></td>
+                                    <td><b class="pull-left">hrm_geo: </b><div contenteditable id="ehrm_geo">geo</div></td>
+                                </tr>
+                                <tr>
+                                    <td><b class="pull-left">hrm_bragg1: </b><div contenteditable id="ehrm_bragg1">bragg1</div></td>
+                                    <td><b class="pull-left">hrm_alpha1: </b><div contenteditable id="ehrm_alpha1">alpha1</div></td>
+                                    <td><b class="pull-left">hrm_theta1_sign: </b><div contenteditable id="ehrm_theta1_sign">theta1 sign</div></td>
+                                </tr>
+                                <tr>
+                                    <td><b class="pull-left">hrm_bragg2: </b><div contenteditable id="ehrm_bragg2">bragg2</div></td>
+                                    <td><b class="pull-left">hrm_alpha2: </b><div contenteditable id="ehrm_alpha2">alpha2</div></td>
+                                    <td><b class="pull-left">hrm_theta2_sign: </b><div contenteditable id="ehrm_theta2_sign">theta2 sign</div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn-sm btn-primary finishHrm" onclick="commitHRM()">Add/Update</button>
+                        <button type="button" class="btn btn-default cancelHrm" onclick="cancelHRM()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="ModalFooter ssModalFooter">
+                    <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="notifModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="notifTitle">Profile:</h4>
+            </div>
+            <div class="notifModalBody" id="notifID">
+                <div class="notifTable text-center">
+                    <table id="notifTable">
+                        <tbody class="notifBod">
+                            {% if userProf %}
+                                <tr>
+                                    <td><b class="pull-left">Username:</b>{{ userProf.username }}</td>
+                                    <td><b class="pull-left">Institution:</b>{{ userProf.institution }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b class="pull-left">Full Name:</b>{{ userProf.fullName }}</td>
+                                    <td><b class="pull-left">Reason:</b>{{ userProf.reason }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b class="pull-left">Email:</b>{{ userProf.email }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fileModal" class="modal fade outer" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="fileTitle">File Information:</h4>
+            </div>
+            <div class="ModalBody" id="fileUserID">
+                <div class="text-center">
+                    <input type="text" class="form-control modFiltInput singularFilt" placeholder="Username" id="fileUserFilt">
+                </div>
+                <div class="fileNameTable">
+                    <table id="fileNameTable">
+                        <tbody>
+                            {% if fileUsers %}
+                                {% for post in fileUsers %}
+                                    <tr class="item">
+                                        <td>{{ post.fUser.username }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                No Users Detected
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="text-center singleGroup">
+                        <button type="button" class="btn btn-sm btn-primary singleAdd" data-toggle="modal" data-target="#nestedFUserModal" data-dismiss="modal">Add User</button>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="removeThing(this)">Remove User</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="ModalFooter ssModalFooter">
+                    <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="userModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="userTitle">User Information:</h4>
+                <div class="text-center delUser">
+                    <button type="button" class="btn btn-danger" onclick="delUser()">Delete User</button>
+                </div>
+                {% if user.approved == 0 %}
+                    <div class="freezeChk">
+                        Awaiting Approval
+                    </div>
+                {% else %}
+                    <div class="freezeChk">
+                        <label for="Freeze">Freeze User</label>
+                        {% if freeze == 2 %}
+                            <input type="checkbox" onclick="freezeUser(this)" id="Freeze" checked>
+                        {% else %}
+                            <input type="checkbox" onclick="freezeUser(this)" id="Freeze">
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="fileModalBody">
+                <input type="text" class="form-control modFiltInput userFileFilt" placeholder="File Name" id="userFileFilt">
+                <div class="outerFileTable col-xs-6" id="userFileID">
+                    <div class="userFileTable">
+                        <table id="userFileTable">
+                            <tbody>
+                                {% if userFiles %}
+                                    {% for post in userFiles %}
+                                        {% set auths = post.authed.split(',') %}
+                                        {% for aID in auths %}
+                                            {% if aID|int() == user.get_id()|int() %}
+                                                <tr class="item">
+                                                    <td class="name" colspan="2" id="{{ post.id }}">
+                                                      {%- if post.name == ".." -%}
+                                                        Parent folder
+                                                      {%- else -%}
+                                                        {{ post.name }}
+                                                      {%- endif -%}
+                                                    </td>
+                                                    <td class="modified">
+                                                      <time datetime="{{ post.modified }}">{{ post.modified }}</time>
+                                                    </td>
+                                                    <td class="size">
+                                                      {% if post.size %}
+                                                        {{ post.size|filesizeformat }}
+                                                      {% else %}
+                                                        -
+                                                      {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td>
+                                        No Files Detected
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="text-center">
+                            <div class="doubleGroupF">
+                                <button type="button" class="btn btn-sm btn-primary addF" data-toggle="modal" data-target="#nestedFileModal" data-dismiss="modal">Add File</button>
+                                <button type="button" class="btn btn-sm btn-primary remF" onclick="removeThing(this)">Remove File</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" class="form-control modFiltInput userSessionFilt" placeholder="Session Name" id="userSessionFilt">
+                <div class="outerSessionTable col-xs-6" id="userSessionID">
+                    <div class="userSessionTable">
+                        <table id="userSessionTable">
+                            <tbody>
+                                {% if userSessions %}
+                                    {% for post in userSessions %}
+                                        {% set auths = post.authed.split(',') %}
+                                        {% for aID in auths %}
+                                            {% if aID|int() == user.get_id()|int() %}
+                                                <tr class="item">
+                                                    <td class="name" colspan="2" id="{{ post.id }}">
+                                                      {%- if post.name == ".." -%}
+                                                        Parent folder
+                                                      {%- else -%}
+                                                        {{ post.name }}
+                                                      {%- endif -%}
+                                                    </td>
+                                                    <td class="modified">
+                                                      <time datetime="{{ post.modified }}">{{ post.modified }}</time>
+                                                    </td>
+                                                    <td class="size">
+                                                      {% if post.size %}
+                                                        {{ post.size|filesizeformat }}
+                                                      {% else %}
+                                                        -
+                                                      {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td>
+                                            No Sessions Detected
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="text-center">
+                            <div class="doubleGroupS">
+                                <button type="button" class="btn btn-sm btn-primary addS" data-toggle="modal" data-target="#nestedSessionModal" data-dismiss="modal">Add Session</button>
+                                <button type="button" class="btn btn-sm btn-primary remS" onclick="removeThing(this)">Remove Session</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br class="clearFloat"/>
+            <div class="ssModalFooter">
+                <div class="row">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="sessionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="sessionUserID">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="sessionTitle">Session Information:</h4>
+            </div>
+            <div class="ModalBody">
+                <div class="text-center">
+                    <input type="text" class="form-control modFiltInput singularFilt" placeholder="Username" id="sessionUserFilt">
+                </div>
+                <div class="sessionUserTable">
+                    <table id="sessionUserTable">
+                        <tbody>
+                            {% if sessionUsers %}
+                                {% for post in sessionUsers %}
+                                    <tr class="item">
+                                        <td>{{ post.sUser.username }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                No Users Detected
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-center singleGroup">
+                    <button type="button" class="btn btn-sm btn-primary singleAdd" data-toggle="modal" data-target="#nestedSUserModal" data-dismiss="modal">Add User</button>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="removeThing(this)">Remove User</button>
+                    <br class="clearFloat"/>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="ModalFooter ssModalFooter">
+                    <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="basePage">
+    <div id="nestedFileModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Files:</h4>
+                </div>
+                <div class="text-center">
+                    <input type="text" class="form-control modFiltInput singularFilt" placeholder="File Name" id="nestedFileFilt">
+                </div>
+                <div class="text-center">
+                    <div class="ModalBody">
+                        <div class="userFileTable nestedTable" id="nestedFileNav">
+                            <table id="nestedFileTable">
+                                <thead class="fixedHead">
+                                    {{ thead() }}
+                                </thead>
+                                <tbody class="scrollable">
+                                    {% if fileData %}
+                                        {% for post in fileData %}
+                                          <tr class="item nestItem fixedHead" onclick="addThing(this)">
+                                            <td class="name" colspan="2" id="{{ post.id }}">
+                                              {%- if post.name == ".." -%}
+                                                Parent folder
+                                              {%- else -%}
+                                                {{ post.name }}
+                                              {%- endif -%}
+                                            </td>
+                                            <td class="modified">
+                                              <time datetime="{{ post.modified }}">{{ post.modified }}</time>
+                                            </td>
+                                            <td class="size">
+                                              {% if post.size %}
+                                                {{ post.size }}
+                                              {% else %}
+                                                -
+                                              {% endif %}
+                                            </td>
+                                          </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="nestedSessionModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sessions:</h4>
+                </div>
+                <div class="text-center">
+                    <input type="text" class="form-control modFiltInput singularFilt" placeholder="File Name" id="nestedSessionFilt">
+                </div>
+                <div class="text-center">
+                    <div class="notifModalBody">
+                        <div class="userFileTable nestedTable" id="nestedSessionNav">
+                        <table id="nestedSessionTable">
+                            <thead class="fixedHead">
+                                {{ thead() }}
+                            </thead>
+                            <tbody class="scrollable">
+                                {% if sesData %}
+                                    {% for post in sesData %}
+                                      <tr class="item fixedHead" onclick="addThing(this)">
+                                        <td class="name" colspan="2" id="{{ post.id }}">
+                                          {%- if post.name == ".." -%}
+                                            Parent folder
+                                          {%- else -%}
+                                            {{ post.name }}
+                                          {%- endif -%}
+                                        </td>
+                                        <td class="modified">
+                                          <time datetime="{{ post.modified }}">{{ post.modified }}</time>
+                                        </td>
+                                        <td class="size">
+                                          {% if post.size %}
+                                            {{ post.size }}
+                                          {% else %}
+                                            -
+                                          {% endif %}
+                                        </td>
+                                      </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="nestedSUserModal" class="modal fade nested" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Users:</h4>
+                </div>
+                <div class="text-center">
+                    <input type="text" class="form-control modFiltInput singularFilt" placeholder="Username" id="nestedSUserFilt">
+                </div>
+                <div class="ModalBody">
+                    <div class="fileNameTable" id="nestedSUserNav">
+                        <table id="nestedSUserTable">
+                            <tbody>
+                                {% if names %}
+                                    {% for name in names %}
+                                        <tr class="item" onclick="addThing(this)">
+                                            <td>{{ name.username }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    No Users Detected
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="text-center ssModalFooter">
+                    <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="nestedFUserModal" class="modal fade nested" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Users:</h4>
+                </div>
+                <div class="text-center">
+                    <input type="text" class="form-control modFiltInput singularFilt" placeholder="Username" id="nestedFUserFilt">
+                </div>
+                <div class="ModalBody">
+                    <div class="fileNameTable" id="nestedFUserNav">
+                        <table id="nestedFUserTable">
+                            <tbody>
+                                {% if names %}
+                                    {% for name in names %}
+                                        <tr class="item" onclick="addThing(this)">
+                                            <td>{{ name.username }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    No Users Detected
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="text-center ssModalFooter">
+                    <button type="button" class="btn btn-default closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <div class="text-center">
+        <div class="notifications" id="notifications">
+            <h3>Notifications:</h3>
+            <table>
+                <tbody>
+                    {% if notifications %}
+                        {% for task in notifications %}
+                            <tr class="item notifTR">
+                                <td class="name" colspan="2" id="{{ task.id }}">
+                                    {{ task.type }}
+                                </td>
+                                <td>
+                                    {{ task.name }}
+                                </td>
+                                <td>
+                                    <button class="btn btn-default" onclick="showInfo({{ task.id }})">Info</button>
+                                </td>
+                                <td>
+                                    {{ task.time }}
+                                </td>
+                                <td>
+                                    <button class="btn btn-success" onclick="approve({{ task.id }})">Approve</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" onclick="decline({{ task.id }})">Decline</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        No Notifications
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="text-center">
+        <div class="navGroup" id="navGroup">
+            <div class="buttonGroup">
+                <div class="btn-group" role="group" aria-label="...">
+                    <div class="hrmButton">
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#hrmModal">HRM</button>
+                    </div>
+                    <button type="button" class="btn btn-default" onclick="Users()">Users</button>
+                    <button type="button" class="btn btn-default" onclick="Files()">Files</button>
+                    <button type="button" class="btn btn-default" onclick="Sessions()">Sessions</button>
+                </div>
+            </div>
+            <input type="text" class="form-control filtInput" placeholder="File Name" id="fileFilt">
+            <div class="fileNav" id="fileNav">
+                <table id="fileTable">
+                    <thead class="fixedHead">
+                        {{ thead() }}
+                    </thead>
+                    <tbody class="scrollable">
+                        {% if fileData %}
+                            {% for post in fileData %}
+                              <tr class="item fixedHead">
+                                <td class="name" colspan="2" id="{{ post.id }}">
+                                  {%- if post.name == ".." -%}
+                                    Parent folder
+                                  {%- else -%}
+                                    {{ post.name }}
+                                  {%- endif -%}
+                                </td>
+                                <td class="modified">
+                                  <time datetime="{{ post.modified }}">{{ post.modified }}</time>
+                                </td>
+                                <td class="size">
+                                  {% if post.size %}
+                                    {{ post.size }}
+                                  {% else %}
+                                    -
+                                  {% endif %}
+                                </td>
+                              </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <input type="text" class="form-control filtInput" placeholder="Username" id="userFilt">
+            <div class="userNav" id="userNav">
+                <div class="nameTable">
+                    <table id="nameTable">
+                        <tbody>
+                            {% if names %}
+                                {% for name in names %}
+                                    <tr class="item">
+                                        <td>{{ name.username }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                No Users Detected
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <input type="text" class="form-control filtInput" placeholder="Session Name" id="sessionFilt">
+            <div class="sessionNav" id="sessionNav">
+                <table id="sessionTable">
+                    <thead class="fixedHead">
+                        {{ thead() }}
+                    </thead>
+                    <tbody class="scrollable">
+                        {% if sesData %}
+                            {% for post in sesData %}
+                              <tr class="item fixedHead">
+                                <td class="name" colspan="2" id="{{ post.id }}">
+                                  {%- if post.name == ".." -%}
+                                    Parent folder
+                                  {%- else -%}
+                                    {{ post.name }}
+                                  {%- endif -%}
+                                </td>
+                                <td class="modified">
+                                  <time datetime="{{ post.modified }}">{{ post.modified }}</time>
+                                </td>
+                                <td class="size">
+                                  {% if post.size %}
+                                    {{ post.size }}
+                                  {% else %}
+                                    -
+                                  {% endif %}
+                                </td>
+                              </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="text-center">
+        <p>Copyright (c) UChicago Argonne, LLC. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,161 @@
+{% from "__autoindex__/macros.html" import thead
+with context %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initialscale=1" name="viewport">
+    <title>Scandataproc</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="/static/view_output.css" rel="stylesheet">
+    <link href="/static/navigator.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/add_file.js"></script>
+    <script type="text/javascript" src="/static/highlight.js"></script>
+    <script type="text/javascript" src="/static/change_comment.js"></script>
+</head>
+<body role="document">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="login">
+                Scandataproc
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="select">
+                        Data Select
+                    </a>
+                </li>
+                <li>
+                    <a href="data">
+                        Data Formatting
+                    </a>
+                </li>
+                <li>
+                    <a href="process">
+                        Data Processing
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container data-select" role="main">
+    <div class="jumbotron">
+        <h1>
+            Please select data
+        </h1>
+
+        <p>
+            If the file you are trying to use is not listed then upload it to the database.
+        </p>
+        <br/>
+        <form id="fileForm" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <br/>
+            <input type="submit" value="Upload File" class="btn btn-primary btn-xs" title="Upload selected file to database"/>
+        </form>
+    </div>
+    <div class="margin-info">
+        <p align="right">Logged in as {{ user.username }}
+            <br/>
+            <a href="/db">Logbook</a>
+            <br/>
+            <a href="/logout">Logout</a>
+        </p>
+    </div>
+</div>
+<script type="text/javascript" src="/static/fileUpload.js"></script>
+<div class="col-center">
+    <div class="row">
+        <div class="col-xs-4" id="navTable" style="width:450px; height:auto; overflow:auto; max-height:500px;">
+            <br/>
+            <span class="centerBlock">
+                {% block header %}{% endblock %}
+                {% block table %}
+                <table>
+                    <thead>
+                        {{ thead() }}
+                    </thead>
+                    <tbody>
+                        {% if data %}
+                            {% for post in data %}
+                                {% if post.authed|int() == user.get_id()|int() %}
+                                  <tr class="item" ondblclick="moveFile()">
+                                    <td class="name" colspan="2" id="{{ post.id }}">
+                                      {%- if post.name == ".." -%}
+                                        Parent folder
+                                      {%- else -%}
+                                        {{ post.name }}
+                                      {%- endif -%}
+                                    </a></td>
+                                    <td class="modified">
+                                      <time datetime="{{ post.modified }}">{{ post.modified }}</time>
+                                    </td>
+                                    <td class="size">
+                                      {% if post.size %}
+                                        {{ post.size|filesizeformat }}
+                                      {% else %}
+                                        -
+                                      {% endif %}
+                                    </td>
+                                  </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                {% endblock %}
+            </span>
+            <br/>
+        </div>
+        <div class="col-xs-4">
+            <br/>
+            <label for="sel1">Files to be used:</label>
+            <select multiple class="form-control" id="sel1">
+            </select>
+        </div>
+        <div class="col-xs-4">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+            <span class="pull-right">
+                <button id="finito" disabled type="submit" class="btn btn-primary btn-lg" onclick="proceed()" title="Advance with all files to be used">
+                    Done
+                </button>
+            </span>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-xs-2">
+            <span class="centerBlock">
+                <button onclick="moveFile()" class="btn btn-primary btn-xs" title="Add all selected files">
+                    Add File
+                </button>
+            </span>
+        </div>
+        <div class="col-xs-2">
+            <span class="centerBlock">
+                <button onclick="delFile()" class="btn btn-primary btn-xs" title="Remove all selected files from database">
+                    Delete File
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initialscale=1" name="viewport">
+    <title>Scandataproc</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/logbook.js"></script>
+    <link href="/static/session.css" rel="stylesheet">
+
+
+</head>
+<body>
+    <h2>Session Data</h2>
+    <div class="inlinel">
+        <button onclick="deleteAll()" class="btn btn-primary btn-xs" title="Clear logbook">
+            Delete All
+        </button>
+    </div>
+    <div class="inliner">
+        <a onclick="parent.history.back();">Back</a>
+    </div>
+    <br class="clearBoth" />
+    </br>
+    {% if data %}
+        {% for post in data %}
+            <hr>
+            <table>
+                <tr>
+                    <td valign="top" width="25%">
+                        <div class="inlinel">
+                            <h3>Inputs</h3>
+                        </div>
+                        <div class="inline-name">
+                            {{ post.name }}
+                        </div>
+                        <br class="clearBoth" />
+                        <table class="bordered" cellpadding="10">
+                            {% for i in range(0, post.columns|length())  %}
+                                <tr>
+                                    <td class="bordered">{{ post.bools[i].data }}</td>
+                                    {% if post.columns[i].data %}
+                                        <td class="bordered"><label style="width:300px;">{{ post.columns[i].label }}</label></td>
+                                        <td class="bordered">{{ post.columns[i].data }}</td>
+                                    {% else %}
+                                        <td class="bordered" colspan="2"><label style="width:300px;">{{ post.columns[i].label }}</label></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td valign="top" width="50%">
+                        <h3>Plot</h3>
+                        {{ post.plot|safe }}
+                    </td>
+                    <td valign="top" width="60%">
+                        <p>
+                            <button onclick="deleteEntry({{ post.id }})" class="btn btn-primary btn-xs" title="Remove this entry from the log">
+                                Delete
+                            </button>
+                            <br/>
+                            <br/>
+                            <br/>
+                            {{ post.comment }}
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+    {% else %}
+        No metadata stored
+    {% endif %}
+</body>
+</html>

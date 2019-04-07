@@ -1,0 +1,135 @@
+<!--
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initialscale=1" name="viewport">
+    <title>Scandataproc</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/logbook/logbook.js"></script>
+    <link href="/static/logbook/session.css" rel="stylesheet">
+</head>
+<body>
+    <h2>Session Data</h2>
+    <div class="inlinel">
+        <button onclick="deleteAll()" class="btn btn-primary btn-xs" title="Clear logbook">
+            Delete All
+        </button>
+    </div>
+    <div class="inliner">
+        <a onclick="parent.history.back();">Back</a>
+    </div>
+    <br class="clearBoth" />
+    </br>
+    {% if data %}
+        {% for post in data %}
+            <hr>
+            <table>
+                <tr>
+                    <td valign="top" width="25%">
+                        <div class="inlinel">
+                            <h3>Inputs</h3>
+                        </div>
+                        <div class="inline-name">
+                            {{ post.name }}
+                        </div>
+                        <br class="clearBoth" />
+                        <table class="bordered" cellpadding="10">
+                            {% for i in range(0, post.columns|length())  %}
+                                <tr>
+                                    <td class="bordered">{{ post.bools[i].data }}</td>
+                                    {% if post.columns[i].data %}
+                                        <td class="bordered"><label style="width:300px;">{{ post.columns[i].label }}</label></td>
+                                        <td class="bordered">{{ post.columns[i].data }}</td>
+                                    {% else %}
+                                        <td class="bordered" colspan="2"><label style="width:300px;">{{ post.columns[i].label }}</label></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td valign="top" width="50%">
+                        <div class="inlinel">
+                            <h3>Plot</h3>
+                        </div>
+                        <div class="inlineSesL">
+                            <h3>Session:</h3>
+                        </div>
+                        <div class="inlineInfo">
+                            {{ post.ses }}
+                        </div>
+                        <div class="inlineStampL">
+                            <h3>Logged:</h3>
+                        </div>
+                        <div class="inlineInfo">
+                            {{ post.time.replace(microsecond=0) }}
+                        </div>
+                        {{ post.plot|safe }}
+                    </td>
+                    <td valign="top" width="60%">
+                        <p>
+                            <button onclick="deleteEntry({{ post.id }})" class="btn btn-primary btn-xs" title="Remove this entry from the log">
+                                Delete
+                            </button>
+                            <br/>
+                            <br/>
+                            <br/>
+                            {{ post.comment }}
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+    {% else %}
+        No metadata stored
+    {% endif %}
+<footer>
+    <div class="text-center">
+        <p>Copyright (c) UChicago Argonne, LLC. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,258 @@
+/*
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+*/
+.margin-info{
+    position: absolute;
+    padding-right: 20px;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+}
+
+.margin-text{
+    color: gray;
+    margin: 0 auto;
+}
+
+.sessionName{ position:absolute; top: 105px; left:150px; font-weight:bold; border:1px dotted; padding:10px;}
+
+.mainContent{
+    width: 50%;
+    overflow: hidden;
+}
+
+.plot{
+    position: relative;
+    margin-left: 200px;
+    margin-top: 100px;
+}
+
+.floatL{
+    float: left;
+}
+
+.floatR{
+    width: 50%;
+    float: left;
+}
+
+.clear{
+    clear: both;
+}
+
+.buttons{
+    margin-top: 200px;
+    clear: both;
+}
+
+#remBackground{
+    margin-top: 50px;
+}
+
+.rightIn{
+    position: relative;
+    left: 150px;
+    bottom: 25px;
+}
+
+.leftIn{
+    position: relative;
+    left: 50px;
+}
+
+.flatRad{
+    position: relative;
+}
+
+.flatLabel{
+    position: relative;
+    top: 20px;
+    left: 20px;
+}
+
+.remFlat{
+    position: relative;
+    top: 25px;
+    width: 350px;
+    left: 50px;
+}
+
+.linearRad{
+    position: relative;
+}
+
+.linLabel{
+    position: relative;
+    top: 35px;
+    left: 20px;
+}
+
+.remLin{
+    position: relative;
+    top: 40px;
+    width: 450px;
+    left: 50px;
+}
+
+.remGiven{
+    position: relative;
+    top: 50px;
+    width: 350px;
+    left: 50px;
+}
+
+.avRad{
+    position: relative;
+    top: 50px;
+    left: 36px;
+}
+
+.avLabel{
+    position: relative;
+    top: 48px;
+    left: 20px;
+}
+
+.remBackModalFooter{
+    position: relative;
+    border-top: 1px solid #e5e5e5;
+    height:70px;
+    width:auto;
+    padding-top: 20px;
+}
+
+.remBackModalBody{
+    position: relative;
+    height:160px;
+    width:auto;
+}
+
+.form-control{
+    margin-bottom:20px;
+    width: 32%;
+}
+
+.centerBlock
+{
+    display: table;
+    margin: 0 auto;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+}
+
+body{
+    margin: 0 0 30px;
+}
+
+html{
+    position: relative;
+    min-height: 100%;
+}
+
+.leftGroup{
+    position: relative;
+    height: 250px;
+    width: 500px;
+    margin-top: 100px;
+    margin-left: -150px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3d75c0;
+    border-radius: 5px;
+}
+
+.remLinText{
+    position: relative;
+    top: 6px;
+    margin: 10px;
+}
+
+#leftButtons{
+    position: relative;
+    top: 20px;
+    right: 70px;
+}
+
+.singleLeftButton{
+    margin: 20px;
+}
+
+.output{
+    position: relative;
+    left: 400px;
+}
+
+.LGLabel{
+    position: relative;
+    top: 100px;
+    left: 30px;
+}
+
+.yCalcLabel{
+    position: relative;
+    float: right;
+    top: 40px;
+    right: 64px;
+}
+
+.calcRightYLabel{
+    margin-left: 30px;
+}
+
+.comment{
+    position: relative;
+    width: 350px;
+    right: 40px;
+}
+
+.disabled{
+    pointer-events: none;
+    opacity: 1;
+}

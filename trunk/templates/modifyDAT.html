@@ -1,0 +1,243 @@
+<!--
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+{% from "__autoindex__/macros.html" import thead
+with context %}
+<!--This is how you comment-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initialscale=1" name="viewport">
+    <title>Scandataproc</title>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
+    <link href="/static/modifyDAT/modifyDAT.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/modifyDAT/modifyDAT.js"></script>
+    <script type="text/javascript" src="/static/mpld3.v0.2.js"></script>
+</head>
+<body role="document">
+<div id="remBackModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Remove Background</h4>
+            </div>
+            <div class="remBackModalBody">
+
+            </div>
+            <div class="remBackModalFooter">
+                <div class="col-xs-4">
+                    <span class="centerBlock">
+                        <button type="button" onclick="remBackground()" class="btn btn-primary btn-default" data-dismiss="modal">Apply</button>
+                    </span>
+                </div>
+                <div class="col-xs-4">
+                    <span class="centerBlock">
+                        <button type="button" class="btn btn-primary btn-default" onclick="resetPlot()" data-dismiss="modal">Reset</button>
+                    </span>
+                </div>
+                <div class="col-xs-4">
+                    <span class="centerBlock">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="login">
+                Scandataproc
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="upload">
+                        Manage Files
+                    </a>
+                </li>
+                <li>
+                    <a href="select">
+                        Select Session
+                    </a>
+                </li>
+                <li id="navData">
+                    <a href="data">
+                        Scans
+                    </a>
+                </li>
+                <li id="navProcess">
+                    <a href="process">
+                        Sum
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="modifyDAT">
+                        Modify DAT
+                    </a>
+                </li>
+                <li>
+                    <a href="profile">
+                        Profile
+                    </a>
+                </li>
+                {% if user.isAdmin == 1 %}
+                <li>
+                    <a href="admin">
+                        Admin
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <div class="margin-info pull-right">
+                    <p class="margin-text" align="right">Logged in as <a href="/profile">{{ user.username }}</a>
+                        <br/>
+                        <a href="/db">Logbook</a>
+                        <br/>
+                        <a onclick="logout()">Logout</a>
+                        <br/>
+                    </p>
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container data-select" role="main">
+    <br/>
+    <br/>
+    <br/>
+    <div class="sessionName" id="sesName">
+        {{ ses }}
+    </div>
+    <div id="mainContent">
+        <div id="leftCol" class="floatL">
+            <div class="comment">
+                <label for="comment">Comment:</label>
+                <textarea class="form-control comment" rows="5" id="comment" name="comment"></textarea>
+            </div>
+            <label for="leftGroup" class="LGLabel">Remove Background</label>
+            <div id="leftGroup" class="leftGroup">
+                <label for="flatRad" class="flatLabel">Flat Value</label>
+                <div class="input-group remFlat">
+                    <span class="input-group-addon">
+                        <input type="radio" id="flatRad" name="methodRad" aria-label="...">
+                    </span>
+                    <input type="text" class="form-control" id="flatVal" placeholder="Y-Value" aria-label="...">
+                </div>
+                <label for="calcRad" class="linLabel">Calculated Average</label>
+                <div class="yCalcLabel" class="yCalcLabel">
+                    <font id="calcLeftYLabel">Left Y</font>
+                    <font id="calcRightYLabel" class="calcRightYLabel">Right Y</font>
+                </div>
+                <div class="input-group remLin">
+                    <span class="input-group-addon">
+                        <input type="radio" id="calcRad" name="methodRad" aria-label="...">
+                    </span>
+                    <input type="text" class="form-control" id="calcLeftX" style="width:25%" placeholder="Left X" aria-label="...">
+                    <input type="text" class="form-control" id="calcRightX" style="width:25%" placeholder="Right X" aria-label="...">
+                    <font id="calcLeftY" class="remLinText" size="3"></font>
+                    <font id="calcRightY" class="remLinText" size="3"></font>
+                </div>
+                <label for="givRad" class="avLabel">Given Average</label>
+                <div class="input-group remGiven">
+                    <span class="input-group-addon">
+                        <input type="radio" id="givRad" name="methodRad" aria-label="...">
+                    </span>
+                    <input type="text" class="form-control" id="leftX" style="width:25%" placeholder="Left X" aria-label="...">
+                    <input type="text" class="form-control" id="leftY" style="width:25%" placeholder="Left Y" aria-label="...">
+                    <input type="text" class="form-control" id="rightX" style="width:25%" placeholder="Right X" aria-label="...">
+                    <input type="text" class="form-control" id="rightY" style="width:25%" placeholder="Right Y" aria-label="...">
+                </div>
+            </div>
+            <div id="leftButtons">
+                <button type="button" class="btn btn-primary btn-default singleLeftButton" onclick="remBackground(0)">Apply</button>
+                <button type="button" class="btn btn-primary btn-default singleLeftButton" onclick="remBackground(1)">Show</button>
+                <button type="button" class="btn btn-primary btn-default singleLeftButton" onclick="resetPlot()">Reset</button>
+            </div>
+        </div>
+        <div id="rightCol" class="floatR">
+             <div id="process_plot" class="plot">
+                {{code|safe}}
+            </div>
+            <form id="output-form" method=post action="">
+                <input type="hidden" name="outType" id="outType">
+                <input type="hidden" name="datFName" id="datFName">
+            </form>
+            <div class="text-center output" id="outputBtn">
+                <button onclick="outputFile()" class="btn btn-primary btn-md" title="Display or save output file">
+                    Output
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="text-center">
+        <p>Copyright (c) UChicago Argonne, LLC. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

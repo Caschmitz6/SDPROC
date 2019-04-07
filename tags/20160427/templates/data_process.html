@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initialscale=1" name="viewport">
+    <title>Scandataproc</title>
+
+    <!-- LOCAL
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/bootstrap-theme.min.css" rel="stylesheet">
+    <script src="/static/jquery-1.4.2.min.js"></script>
+    -->
+
+    <!-- ONLINE -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <link href="/static/teststyle.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/mpld3.v0.2.js"></script>
+
+
+</head>
+<body role="document">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="login">
+                Scandataproc
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="select">
+                        Data Select
+                    </a>
+                </li>
+                <li>
+                    <a href="data">
+                        Data Formatting
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="process">
+                        Data Processing
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container option-select" role="main">
+    <br/>
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-xs-6">
+            <label for="sel1">Select files to use:</label>
+            <select multiple class="form-control" id="sel1">
+                <option>/home/phoebus3/CASCHMITZ/Desktop/test/scan0357.txt</option>
+                <option>/home/phoebus3/CASCHMITZ/Desktop/test/scan0196.txt</option>
+            </select>
+        </div>
+        <div class="col-xs-6">
+            {{code|safe}}
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,219 @@
+/*
+-    Copyright (c) UChicago Argonne, LLC. All rights reserved.
+-
+-    Copyright UChicago Argonne, LLC. This software was produced
+-    under U.S. Government contract DE-AC02-06CH11357 for Argonne National
+-    Laboratory (ANL), which is operated by UChicago Argonne, LLC for the
+-    U.S. Department of Energy. The U.S. Government has rights to use,
+-    reproduce, and distribute this software.  NEITHER THE GOVERNMENT NOR
+-    UChicago Argonne, LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR
+-    ASSUMES ANY LIABILITY FOR THE USE OF THIS SOFTWARE.  If software is
+-    modified to produce derivative works, such modified software should
+-    be clearly marked, so as not to confuse it with the version available
+-    from ANL.
+-
+-    Additionally, redistribution and use in source and binary forms, with
+-    or without modification, are permitted provided that the following
+-    conditions are met:
+-
+-        * Redistributions of source code must retain the above copyright
+-          notice, this list of conditions and the following disclaimer.
+-
+-        * Redistributions in binary form must reproduce the above copyright
+-          notice, this list of conditions and the following disclaimer in
+-          the documentation and/or other materials provided with the
+-          distribution.
+-
+-        * Neither the name of UChicago Argonne, LLC, Argonne National
+-          Laboratory, ANL, the U.S. Government, nor the names of its
+-          contributors may be used to endorse or promote products derived
+-          from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY UChicago Argonne, LLC AND CONTRIBUTORS
+-    AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL UChicago
+-    Argonne, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-    POSSIBILITY OF SUCH DAMAGE.
+*/
+.data-row{margin-right:-15px;margin-left:-15px;height:100px}
+.scan-list, .form-control{margin-bottom:20px}
+
+.allCols{
+    display: inline-block;
+    text-align: center;
+}
+
+.manageButtons{
+    display: inline-block;
+    margin-top: 20px;
+}
+
+td {
+    padding: 10px;
+}
+
+.centerBlock{
+            display: table;
+            margin: 0 auto;
+            }
+
+select[multiple].scan-list{
+    padding: 0 24px
+}
+
+.highlight{background-color: #7498c9;}
+
+.lightlight{background-color: #e6f2ff;}
+
+.margin-info{
+    position: absolute;
+    padding-right: 20px;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+}
+
+.margin-text{
+    color: gray;
+    margin: 0 auto;
+}
+
+@media (min-width: 1220px){
+    .floatL{
+        float: left;
+    }
+    .navBlock{
+        margin-right: 220px;
+    }
+}
+
+.stretcher{
+    width:500px;
+}
+
+.deleteStretch{
+    width:100px;
+}
+
+.optionBtns{
+    position: relative;
+    left: 5%;
+}
+
+.delBtn{
+    float: left;
+    margin-right: 100px;
+    width: 150px;
+}
+
+.shareBtn{
+    float: left;
+    width: 150px;
+}
+
+.ssModalFooter{
+    position: relative;
+    height:70px;
+    width:auto;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 20px;
+}
+
+.ssModalBody{
+    position: relative;
+    height:160px;
+    width:auto;
+}
+
+.nameTable{
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 75%;
+    height: auto;
+    width: 30%;
+    left: 35%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3d75c0;
+    border-radius: 5px;
+}
+
+.searchLabel{
+    float: left;
+    margin-top: 8px;
+    margin-left: 90px;
+    font-weight: bold;
+}
+
+.navTable{
+    width:500px;
+}
+
+.filtInput{
+    position: relative;
+    width: 40%;
+    left: 30%;
+    top: 3%;
+}
+
+.navFiltInput{
+    width: 40%;
+    margin-left: 30%;
+}
+
+.comGroup{
+    margin-top: 50px;
+    width: 500px;
+    float: left;
+}
+
+.fixedHead{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.scrollable{
+    display: block;
+    height: 350px;
+    overflow: auto;
+}
+
+h1{
+    margin-top: 40px;
+    font-size: 40px !important;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+}
+
+body{
+    margin: 0 0 30px;
+}
+
+html{
+    position: relative;
+    min-height: 100%;
+}
+
+.disabled{
+    pointer-events: none;
+    opacity: 1;
+}
+
+.smallText{
+    font-size: 120% !important;
+}
